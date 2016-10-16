@@ -1,19 +1,20 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER James Baxter <j.w.baxter@gmail.com>
 
-# Install wget
-RUN \
-  apt-get update && \
-  apt-get install wget -y
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update -q && apt-get install wget -qqy
 
-# Install Java
-RUN \
-  wget --progress=bar --no-check-certificate -O /tmp/jdk.tar.gz --header "Cookie: oraclelicense=a" http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-x64.tar.gz && \
-  tar xvf /tmp/jdk.tar.gz && \
-  rm /tmp/jdk.tar.gz && \
-  mkdir -p /usr/lib/jvm/java-8-oracle && \
-  mv jdk1.8.0_65/jre /usr/lib/jvm/java-8-oracle/jre && \
-  rm -r jdk1.8.0_65 && \
-  chown root:root -R /usr/lib/jvm/java-8-oracle/jre && \
-  update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-oracle/jre/bin/java 1 && \
-  update-alternatives --set java /usr/lib/jvm/java-8-oracle/jre/bin/java
+ENV JDK_VERSION 8u101
+ENV JDK_BUILD 13
+ENV JDK_FOLDER jdk1.8.0_101
+
+RUN wget -q --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JDK_VERSION}-b${JDK_BUILD}/jdk-${JDK_VERSION}-linux-x64.tar.gz
+RUN mkdir /usr/lib/jvm && \
+    tar -C /usr/lib/jvm -zxf jdk-${JDK_VERSION}-linux-x64.tar.gz && \
+    ln -s /usr/lib/jvm/${JDK_FOLDER} /usr/lib/jvm/jdk && \
+    update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk/bin/javac 1 && \
+    update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk/bin/java 1 && \
+    update-alternatives --set javac /usr/lib/jvm/jdk/bin/javac && \
+    update-alternatives --set java /usr/lib/jvm/jdk/bin/java && \
+    export JAVA_HOME=/usr/lib/jvm/jdk && \
+    export PATH=$PATH:$JAVA_HOME/bin
