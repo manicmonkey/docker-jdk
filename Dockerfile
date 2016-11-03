@@ -4,9 +4,9 @@ MAINTAINER James Baxter <j.w.baxter@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -q && apt-get install wget -qqy
 
-ENV JDK_VERSION 8u101
-ENV JDK_BUILD 13
-ENV JDK_FOLDER jdk1.8.0_101
+ENV JDK_VERSION 8u111
+ENV JDK_BUILD 14
+ENV JDK_FOLDER jdk1.8.0_111
 
 RUN wget -q --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JDK_VERSION}-b${JDK_BUILD}/jdk-${JDK_VERSION}-linux-x64.tar.gz
 RUN mkdir /usr/lib/jvm && \
