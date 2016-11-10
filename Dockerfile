@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM phusion/baseimage
 MAINTAINER James Baxter <j.w.baxter@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
